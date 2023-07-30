@@ -16,12 +16,15 @@ refs.selectForm.addEventListener("change", renderCat)
 
 fetchBreeds()
   .then(response => {
+    refs.error.setAttribute("hidden", true);
     const breeds = response.data;
     const breedNames = breeds.map(breed => breed.name); 
     createBreedsSelect(breedNames);
 
   })
-  .catch(error => refs.error.removeAttribute("hidden"));
+  .catch(error => {refs.loader.setAttribute("hidden", true);
+        refs.error.removeAttribute("hidden");
+        refs.catInfo.innerHTML = " ";});
 
 
 function createBreedsSelect(breedNames) {
@@ -44,6 +47,7 @@ function renderCat(e) {
 
   fetchBreeds()
     .then(response => {
+      refs.error.setAttribute("hidden", true);
       const breeds = response.data;
 
       for (let i = 0; i < breeds.length; i++) {
@@ -60,7 +64,9 @@ function renderCat(e) {
               refs.catInfo.innerHTML = `<div><h1>${catsBreedName}</h1><p>${breedDescr}<br><b>Temperament:</b> ${temperament}</p></div>`;
               refs.loader.setAttribute("hidden", true); 
             })
-            .catch(error => console.log("error"));
+            .catch(error => {refs.loader.setAttribute("hidden", true);
+        refs.error.removeAttribute("hidden");
+        refs.catInfo.innerHTML = " ";});
 
           foundBreed = true; 
           break; 
@@ -72,7 +78,9 @@ function renderCat(e) {
         refs.error.removeAttribute("hidden");
       }
     })
-    .catch(error => refs.error.removeAttribute("hidden"));
+    .catch(error => {refs.loader.setAttribute("hidden", true);
+        refs.error.removeAttribute("hidden");
+        refs.catInfo.innerHTML = " ";});
 }
 
   function getCatImage (breedId){ const pictureUrl = `https://api.thecatapi.com/v1/images/search?limit=10&breed_ids=${breedId}&api_key=%22live_QizwG36WpcJn3g8MpfMLtUHPQYLKvggVkcmarBeXGmgXp17Vzihd9AFNXfBzcDUY%22`;
@@ -93,8 +101,9 @@ function renderCat(e) {
 
 
      return catPicture;
-   }).catch(error => refs.error.removeAttribute("hidden"));
-  }
+   }).catch(error => {refs.loader.setAttribute("hidden", true);
+        refs.error.removeAttribute("hidden");
+        refs.catInfo.innerHTML = " ";});
 
 
  
